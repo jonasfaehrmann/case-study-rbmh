@@ -1,0 +1,39 @@
+version: '3'
+
+services:
+  mysql:
+    image: mysql:8.0
+    volumes:
+      - ./mysql:/tmp/database
+    command: mysqld --init-file="/tmp/database/install_db.sql"
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=MediaDb
+      - MYSQL_USER=user
+      - MYSQL_PASSWORD=password
+    ports:
+      - 3306:3306
+
+  media-service:
+    build: mediaService/
+    image: media-service
+    restart: on-failure
+    depends_on:
+      - mysql
+    ports:
+      - 8080:8080
+    environment:
+      - DATABASE_HOST=mysql
+      - DATABASE_USER=user
+      - DATABASE_PASSWORD=password
+      - DATABASE_NAME=MediaDb
+      - DATABASE_PORT=3306
+
+  media-web:
+    build: mediaWeb/
+    image: media-web
+    restart: on-failure
+    depends_on:
+      - media-service
+    ports:
+      - 49160:8081  

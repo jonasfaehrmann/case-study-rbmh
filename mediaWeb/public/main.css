@@ -1,0 +1,11 @@
+.videoDurationCard {
+    float: right;
+    position: absolute;
+    top: 170px;
+    right: 10px;
+}
+
+/* Overwrite bootstrap */
+.card {
+    border: 0px
+}
