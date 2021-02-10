@@ -5,13 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="author" content="Jonas Fährmann">
     <title>Redbull Demo</title>
-    <link href="/css/bootstrap.css" rel="stylesheet">
-    <link href="/css/all.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="/css/glightbox.css" />
     <link rel="stylesheet" href="/css/nanogallery2.min.css" />
     <link href="/main.css" rel="stylesheet">
 </head>
 <body>
+    <a href="/">All</a>
+    <a href="/top10">Top 10</a>
     <div id="nanogallery" data-nanogallery2='{ 
         "thumbnailBorderHorizontal" : 0,
         "thumbnailBorderVertical": 0,
@@ -23,18 +22,15 @@
         "thumbnailToolbarImage": { "topLeft": "custom1" },
         "fnThumbnailInit" : "myTnInit",
         "fnThumbnailToolCustAction" : "myTnTool",
-        "icons": { "thumbnailCustomTool1": "<i>♥️</i>" }
+        "icons": { "thumbnailCustomTool1": "<i></i>" }
     }'>
     <% media.forEach(function(entity, index){ %>
-        <a href="<%= entity.contentUrl %>" data-ngthumb="<%= entity.previewUrl %>" data-ngdesc="<%= entity.id %>"><%= entity.title %></a>
+        <a href="<%= entity.contentUrl %>" data-ngthumb="<%= entity.previewUrl %>" data-ngdesc="<%= entity.id %>|<%= entity.rating %>"><%= entity.title %></a>
     <%  }) %>
     </div>
 </div>
 </body>
 <footer>
-    <script src="/js/bootstrap.min.js"></script>
-    <script src="/js/all.min.js"></script>
-    <script src="/js/glightbox.min.js"></script>
     <script src="/jquery.min.js"></script>
     <script src="/jquery.nanogallery2_mod.js"></script>
     <script src="/main.js"></script>

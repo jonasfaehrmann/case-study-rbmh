@@ -20,8 +20,18 @@ app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 
 app.get('/', (req, res) => {
-  // getJSON('http://media-service:8080/media/')
-  getJSON('http://localhost:8080/media/')
+  getJSON('http://media-service:8080/media/')
+    .then(response => {
+      res.render('home', { media: response })
+    })
+    .catch(error => {
+      console.log(error)
+      res.render('error')
+    })
+})
+
+app.get('/top10', (req, res) => {
+  getJSON('http://media-service:8080/media/top10')
     .then(response => {
       res.render('home', { media: response })
     })
@@ -32,16 +42,16 @@ app.get('/', (req, res) => {
 })
 
 app.post('/rateMediaById', (req, res) => {
-  console.log(req.body)
-  /* const post = bent('http://localhost:8080/media/', 'POST', 'json', 200)
-  post('updateRating', { id: req.body.id, rating: req.body.rating })
+  const post = bent('http://media-service:8080/media/', 'POST', 200)
+  post('updateRating?id=' + req.body.id + '&' + 'rating=' + req.body.rating)
     .then(response => {
-      console.log(response)
+      response.text().then(text => { console.log(text) })
+      res.status(400).end()
     })
     .catch(error => {
       console.log(error)
+      res.status(404).end()
     })
-    */
 })
 
 app.listen(PORT, HOST)

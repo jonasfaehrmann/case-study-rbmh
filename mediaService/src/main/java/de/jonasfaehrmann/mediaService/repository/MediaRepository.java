@@ -9,4 +9,5 @@ import org.springframework.data.repository.CrudRepository;
 @Repository
 public interface MediaRepository extends CrudRepository<Media, String>{
 
+	Iterable<Media> findTop10ByOrderByRatingDesc();
 }
