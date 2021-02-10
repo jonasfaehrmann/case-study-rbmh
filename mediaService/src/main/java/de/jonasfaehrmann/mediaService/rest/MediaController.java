@@ -19,7 +19,7 @@ public class MediaController {
   @Autowired
   private MediaRepository mediaRepository;
 
-  @PostMapping(path="/")
+  @PostMapping(path="/updateRating")
   public @ResponseBody String modifyMedia (@RequestParam String id
       , @RequestParam int rating) { 
     Optional<Media> optionalEntity = mediaRepository.findById(id);

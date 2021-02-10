@@ -1,59 +1,46 @@
-
-var lightbox = GLightbox()
-lightbox.on('open', (target) => {
-  console.log('lightbox opened')
-})
-var lightboxDescription = GLightbox({
-  selector: '.glightbox2'
-})
-var lightboxVideo = GLightbox({
-  selector: '.glightbox3'
-})
-lightboxVideo.on('slide_changed', ({ prev, current }) => {
-  console.log('Prev slide', prev)
-  console.log('Current slide', current)
-
-  const { slideIndex, slideNode, slideConfig, player } = current
-
-  if (player) {
-    if (!player.ready) {
-      // If player is not ready
-      player.on('ready', (event) => {
-        // Do something when video is ready
-      })
-    }
-
-    player.on('play', (event) => {
-      console.log('Started play')
-    })
-
-    player.on('volumechange', (event) => {
-      console.log('Volume change')
-    })
-
-    player.on('ended', (event) => {
-      console.log('Video ended')
-    })
+// click/touch on custom tool/button
+function myTnTool (action, item) {
+  switch (action) {
+    case 'custom1':
+      // switch favorite status
+      item.customData.favorite = !item.customData.favorite
+      sendMediaRating(item.$elt.find('.nGY2GThumbnailDescription').text(), item.customData.favorite)
+      TnSetFavorite(item)
+      break
   }
-})
+}
 
-var lightboxInlineIframe = GLightbox({
-  selector: '.glightbox4'
-})
+// Add custom elements after one thumbnail is build
+function myTnInit ($e, item, GOMidx) {
+  console.log(item.$elt.find('[data-ngy2action="custom1"]').css('color'))
+  TnSetFavorite(item)
+}
 
-/* var exampleApi = GLightbox({ selector: null });
-        exampleApi.insertSlide({
-            href: 'https://picsum.photos/1200/800',
-        });
-        exampleApi.insertSlide({
-            width: '500px',
-            content: '<p>Example</p>'
-        });
-        exampleApi.insertSlide({
-            href: 'https://www.youtube.com/watch?v=WzqrwPhXmew',
-        });
-        exampleApi.insertSlide({
-            width: '200vw',
-            content: document.getElementById('inline-example')
-        });
-        exampleApi.open(); */<
+// Set the favorite status
+function TnSetFavorite (item) {
+  let c = '#fff'
+  if (item.customData.favorite) {
+    c = '#e84855'
+  }
+  item.$elt.find('[data-ngy2action="custom1"]').css('color', c)
+}
+
+async function sendMediaRating (id, vote) {
+  window.fetch('/rateMediaById', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ id: id, rating: vote })
+  })
+    .then(function (response) {
+      if (response.ok) {
+        console.log('Click was recorded')
+        return
+      }
+      throw new Error('Request failed.')
+    })
+    .catch(function (error) {
+      console.log(error)
+    })
+}

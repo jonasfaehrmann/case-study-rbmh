@@ -8,78 +8,26 @@
     <link href="/css/bootstrap.css" rel="stylesheet">
     <link href="/css/all.min.css" rel="stylesheet">
     <link rel="stylesheet" href="/css/glightbox.css" />
+    <link rel="stylesheet" href="/css/nanogallery2.min.css" />
     <link href="/main.css" rel="stylesheet">
 </head>
 <body>
-<div class="album py-5 bg-light">
-    <div class="container">
-        <div class="glightbox-desc custom-desc1">
-            <p>The content of this div will be used as the slide description</p>
-            <p>You can add links and any HTML you want</p>
-        </div>     
-        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+    <div id="nanogallery" data-nanogallery2='{ 
+        "thumbnailBorderHorizontal" : 0,
+        "thumbnailBorderVertical": 0,
+        "thumbnailHoverEffect2": "scale120",
+        "thumbnailLabel": { "valign": "bottom", "position": "overImage", "displayDescription": true, "hideIcons": true },
+        "allowHTMLinData": true,
+        "viewerGallery": "none",
+        "viewerTools" : { "topRight": "", "topLeft": ""},
+        "thumbnailToolbarImage": { "topLeft": "custom1" },
+        "fnThumbnailInit" : "myTnInit",
+        "fnThumbnailToolCustAction" : "myTnTool",
+        "icons": { "thumbnailCustomTool1": "<i>♥️</i>" }
+    }'>
     <% media.forEach(function(entity, index){ %>
-            <div class="col">
-                <div class="card">
-                    <img src="<%= entity.previewUrl %>" class="card-img-top" alt="...">
-                    <small class="videoDurationCard text-white"><%= entity.length %></small>
-                    <div class="card-body">
-                        <% if(entity.mediaType == 'image'){ %>
-                        <div class="d-flex justify-content-between align-items-center">
-                            <h5 class="card-title"><%= entity.title %></h5>
-                            <div class="btn-group">
-                                <button type="button" data-bs-toggle="modal" data-bs-target="#modal<%= index %>" class="btn btn-sm btn-light">
-                                    <i class="fas fa-expand-alt"></i>
-                                </button>
-                            </div>
-                        </div>
-                        <%  }else { %>
-                        <div class="d-flex justify-content-between align-items-center">
-                            <h5 class="card-title"><%= entity.title %></h5>
-                            <div class="btn-group">
-                                <button type="button" data-bs-toggle="modal" data-bs-target="#modal<%= index %>" class="btn btn-sm btn-light">
-                                    <i class="fas fa-play-circle"></i>
-                                </button>
-                            </div>
-                        </div>
-                        <%  } %>
-                    </div>
-                </div>
-            </div>
-            <% if(entity.mediaType == 'image'){ %>
-            <div class="modal fade" id="modal<%= index %>">
-                <div class="modal-dialog modal-dialog-centered">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                          <h5 class="modal-title"><%= entity.title %></h5>
-                          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-                          <img src="<%= entity.contentUrl %>" alt="...">
-                        </div>
-                      </div>
-                </div>
-            </div>
-            <%  }else { %>
-                <div class="modal fade" id="modal<%= index %>">
-                    <div class="modal-dialog">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                              <h5 class="modal-title"><%= entity.title %></h5>
-                              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                            </div>
-                            <div class="modal-body">
-                                <!-- <video width="320" height="240" controls>
-                                    <source src="<%= entity.contentUrl %>" type="video/mp4">
-                                  Your browser does not support the video tag.
-                                </video> -->
-                            </div>
-                          </div>
-                    </div>
-                </div>
-                <%  } %>
-        <%  }) %>
-        </div>
+        <a href="<%= entity.contentUrl %>" data-ngthumb="<%= entity.previewUrl %>" data-ngdesc="<%= entity.id %>"><%= entity.title %></a>
+    <%  }) %>
     </div>
 </div>
 </body>
@@ -87,6 +35,8 @@
     <script src="/js/bootstrap.min.js"></script>
     <script src="/js/all.min.js"></script>
     <script src="/js/glightbox.min.js"></script>
+    <script src="/jquery.min.js"></script>
+    <script src="/jquery.nanogallery2_mod.js"></script>
     <script src="/main.js"></script>
 </footer>
 </html>

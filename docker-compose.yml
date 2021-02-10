@@ -1,23 +1,23 @@
-version: '3'
+version: '3.3'
 
 services:
   mysql:
     image: mysql:8.0
     volumes:
-      - ./mysql:/tmp/database
-    command: mysqld --init-file="/tmp/database/install_db.sql"
+      - ./mysql:/docker-entrypoint-initdb.d
     environment:
       - MYSQL_ROOT_PASSWORD=root
       - MYSQL_DATABASE=MediaDb
       - MYSQL_USER=user
       - MYSQL_PASSWORD=password
-    ports:
-      - 3306:3306
+    networks:
+      - backend
 
   media-service:
     build: mediaService/
     image: media-service
     restart: on-failure
+    command: ["./wait-for-it.sh", "mysql:3306"]
     depends_on:
       - mysql
     ports:
@@ -28,6 +28,9 @@ services:
       - DATABASE_PASSWORD=password
       - DATABASE_NAME=MediaDb
       - DATABASE_PORT=3306
+    networks:
+      - backend
+      - frontend
 
   media-web:
     build: mediaWeb/
@@ -36,4 +39,10 @@ services:
     depends_on:
       - media-service
     ports:
-      - 49160:8081  
+      - 49160:8081
+    networks:
+      - frontend
+
+networks:
+  frontend:
+  backend:
